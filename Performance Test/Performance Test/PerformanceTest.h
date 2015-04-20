@@ -21,7 +21,7 @@ public:
   //destructor
   ~PerformanceTest();
 
-  void createLinkedList(int numOfElements);
+  void createStdVector(int numOfElements);
 };
 
 
