@@ -6,26 +6,6 @@
 #include <stdio.h>
 #include <iostream>
 
-class TimeFunction{
-public:
-  //constructors
-
-  ///default
-  TimeFunction();
-  ///copy
-  TimeFunction(const TimeFunction &pt);
-  ///custom (n num of elements)
-  TimeFunction(int numOfElements);
-
-  //destructor
-  ~TimeFunction();
-
-  double clockDiffToSecs(long clockDiff);
-
-  template<class Proc>
-  void timeIt(Proc proc, int n);
-};
-
 class PerformanceTest{
 public:
   //constructors
@@ -42,6 +22,14 @@ public:
 private:
   template<class OutIt>
   void init(OutIt it, int size);
+
+  template<class Container>
+  void test(Container const & c);
+
+  template<typename T>
+  void timeIt(T t);
+
+  void runTests(int numOfElements);
 
   void createContainers(int numOfElements);
 };
