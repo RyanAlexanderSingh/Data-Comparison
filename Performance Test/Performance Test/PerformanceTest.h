@@ -3,7 +3,10 @@
 
 #include "LinkedList.h"
 
-
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <iterator>
 
 class PerformanceTest{
 public:
@@ -18,6 +21,9 @@ public:
 
   //destructor
   ~PerformanceTest();
+private:
+  template<class OutIt>
+  void init(OutIt it, int size);
 
   void createStdVector(int numOfElements);
 };
