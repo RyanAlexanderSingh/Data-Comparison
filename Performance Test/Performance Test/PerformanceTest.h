@@ -40,6 +40,10 @@ public:
   //destructor
   ~PerformanceTest();
 private:
+  
+  template<class Container>
+  void test(Container const &c);
+
   template<class OutIt>
   void init(OutIt it, int size);
 

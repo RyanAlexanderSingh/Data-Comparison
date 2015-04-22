@@ -2,27 +2,18 @@
 
 #include <vector>
 #include <iterator>
-#include <ctime>
+#include <chrono>
 
-///returns the time in microseconds
-double TimeFunction::clockDiffToSecs(long clockDiff){
-  return double(clockDiff) / CLOCKS_PER_SEC; //1000 clocks per sec 
-}
-
-///measures execution time of small code snippets and derived from the Python function "timeit"
-template<class Proc>
-void TimeFunction::timeIt(Proc proc, int repeats = 1){
-  std::clock_t const start = std::clock(); //grab the current time
-  for (int i = 0; i < repeats; ++i) proc();
-  std::clock_t const end = std::clock //when loop ends
-    if (TimeFunction::clockDiffToSecs(end - start) < .2)
-      return timeIt(proc, repeats * 5);
-  return TimeFunction::clockDiffToSecs(end - start) * (1e6 / repeats);
-}
+using namespace std::chrono;
 
 PerformanceTest::PerformanceTest(int numOfElements){
-  LinkedList linkedList_(numOfElements);
+  //LinkedList linkedList_(numOfElements);
   PerformanceTest::createStdVector(numOfElements);
+}
+
+template<class Container>
+void PerformanceTest::test(Container const &c){
+  std::for_each
 }
 
 ///populate the container with n (size) elements
@@ -33,13 +24,18 @@ void PerformanceTest::init(OutIt it, int size){
   }
 }
 
+///create a std::vector and using std::chrono::high_resolution_clock to return 
 void PerformanceTest::createStdVector(int numOfElements_){
+
+  high_resolution_clock::time_point start = high_resolution_clock::now();
   std::vector<int> ivec;
   init(std::back_inserter(ivec), numOfElements_);
-  //just for testing purposes (remove later)
-  /*for (unsigned i = 0; i < ivec.size(); ++i){
-    printf("ivec value: %i\n", ivec[i]);
-    }*/
+  high_resolution_clock::time_point end = high_resolution_clock::now();
+  
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+  std::cout << duration;
+  system("pause");
 }
 
 PerformanceTest::~PerformanceTest(){}
