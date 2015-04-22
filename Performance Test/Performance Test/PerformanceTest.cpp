@@ -1,6 +1,7 @@
 #include "PerformanceTest.h"
 
 #include <vector>
+#include <list>
 #include <iterator>
 #include <chrono>
 
@@ -8,12 +9,7 @@ using namespace std::chrono;
 
 PerformanceTest::PerformanceTest(int numOfElements){
   //LinkedList linkedList_(numOfElements);
-  PerformanceTest::createStdVector(numOfElements);
-}
-
-template<class Container>
-void PerformanceTest::test(Container const &c){
-  std::for_each
+  PerformanceTest::createContainers(numOfElements);
 }
 
 ///populate the container with n (size) elements
@@ -25,17 +21,23 @@ void PerformanceTest::init(OutIt it, int size){
 }
 
 ///create a std::vector and using std::chrono::high_resolution_clock to return 
-void PerformanceTest::createStdVector(int numOfElements_){
+void PerformanceTest::createContainers(int numOfElements_){
 
   high_resolution_clock::time_point start = high_resolution_clock::now();
   std::vector<int> ivec;
   init(std::back_inserter(ivec), numOfElements_);
   high_resolution_clock::time_point end = high_resolution_clock::now();
   
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+  long long duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+  std::cout << "Vector build time: " << duration << " milliseconds with " << ivec.size() << " elements \n";
 
-  std::cout << duration;
-  system("pause");
+  start = high_resolution_clock::now();
+  std::list<int> ilist;
+  init(std::back_inserter(ilist), numOfElements_);
+  end = high_resolution_clock::now();
+
+  duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+  std::cout << "List build time: " << duration << " milliseconds with " << ivec.size() << " elements \n";
 }
 
 PerformanceTest::~PerformanceTest(){}
