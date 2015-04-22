@@ -5,8 +5,26 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <vector>
-#include <iterator>
+
+class TimeFunction{
+public:
+  //constructors
+
+  ///default
+  TimeFunction();
+  ///copy
+  TimeFunction(const TimeFunction &pt);
+  ///custom (n num of elements)
+  TimeFunction(int numOfElements);
+
+  //destructor
+  ~TimeFunction();
+
+  double clockDiffToSecs(long clockDiff);
+
+  template<class Proc>
+  void timeIt(Proc proc, int n);
+};
 
 class PerformanceTest{
 public:
@@ -27,6 +45,8 @@ private:
 
   void createStdVector(int numOfElements);
 };
+
+
 
 
 
