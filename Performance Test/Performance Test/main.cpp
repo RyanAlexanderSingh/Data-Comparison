@@ -11,5 +11,8 @@
 
 int main(){
   //create both the linked list and the std::vector with n elements
-  PerformanceTest test(100);
+  printf("Enter desired container size for performance test...\n");
+  int size;
+  std::cin >> size;
+  PerformanceTest test(size);
 }
