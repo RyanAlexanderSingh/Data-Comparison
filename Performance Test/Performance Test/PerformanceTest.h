@@ -6,6 +6,12 @@
 #include <stdio.h>
 #include <iostream>
 
+class TimeFunction{
+  public:
+    template <typename P>
+    double timeIt(void(*function)(P), P p);
+};
+
 class PerformanceTest{
 public:
   //constructors
@@ -20,14 +26,10 @@ public:
   //destructor
   ~PerformanceTest();
 private:
-  template<class OutIt>
-  void init(OutIt it, int size);
+  template<typename OutIt>
+  void init(OutIt it);
 
-  template<class Container>
-  void test(Container const & c);
-
-  template<typename T>
-  void timeIt(T t);
+  void tester(int i);
 
   void runTests(int numOfElements);
 
