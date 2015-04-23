@@ -9,7 +9,7 @@
 class TimeFunction{
   public:
     template <typename P>
-    double timeIt(void(*function)(P), P p);
+    double timeIt(void(*function)(P, int), P p, int data);
 };
 
 class PerformanceTest{
@@ -26,14 +26,11 @@ public:
   //destructor
   ~PerformanceTest();
 private:
-  template<typename OutIt>
-  void init(OutIt it);
-
+  
   void tester(int i);
 
   void runTests(int numOfElements);
-
-  void createContainers(int numOfElements);
+  
 };
 
 
