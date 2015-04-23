@@ -8,8 +8,8 @@
 
 class TimeFunction{
   public:
-    template <typename P>
-    double timeIt(void(*function)(P, int), P p, int data);
+    template <typename Container>
+    double timeIt(void(*function)(Container, int), Container c, int data);
 };
 
 class PerformanceTest{
@@ -27,10 +27,7 @@ public:
   ~PerformanceTest();
 private:
   
-  void tester(int i);
-
   void runTests(int numOfElements);
-  
 };
 
 

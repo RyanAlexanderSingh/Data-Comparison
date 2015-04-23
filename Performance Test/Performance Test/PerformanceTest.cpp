@@ -5,7 +5,6 @@
 #include <iterator>
 #include <chrono>
 #include <functional>
-#include <thread>
 
 using namespace std::chrono;
 
@@ -18,16 +17,28 @@ void createContainers(OutIt it, int size){
   }
 }
 
-template <typename P>
-double TimeFunction::timeIt(void(*function)(P, int), P p, int data){
+///using insert to add element at location (moves all subsequent elements up one place)
+template<typename Container>
+void insertElement(Container c, int position){
+  int value = 391; //adding bogus value
+  c->insert(c->begin() + position, value);
+
+  //just for testing purposes
+  /*for (int i = 0; i < c.size(); ++i){
+    printf("Value:%i\n", c[i]);
+  }*/
+
+}
+
+template <typename Container>
+double TimeFunction::timeIt(void(*function)(Container, int), Container c, int data){
 
   auto start = high_resolution_clock::now();
-  function(p, data);
+  function(c, data);
   auto end = high_resolution_clock::now();
 
   return duration_cast<microseconds>(end - start).count();
 }
-
 
 PerformanceTest::PerformanceTest(int numOfElements){
   //LinkedList linkedList_(numOfElements);
@@ -52,9 +63,19 @@ void PerformanceTest::runTests(int numOfElements_){
     << time.timeIt(createContainers, &std::back_inserter(ilist), numOfElements_)
     << " microseconds\n" << std::endl;
 
-  for (int i = 0; i < numOfElements_; ++i)
-    printf("Vector value: %i\n", ivec[i]);
-  // add/remove an item at nth position
+  //update (add/remove item)
+  //std::vector
+  int elementPos;
+  std::cin >> elementPos;
+
+  std::cout << "Time taken to insert value at element " << elementPos << " in vector: "
+    << time.timeIt(insertElement, &ivec, elementPos) << " microseconds\n" << std::endl;
+
+  for (int i = 0; i < ivec.size(); ++i){
+    printf("Value:%i\n", ivec[i]);
+  }
+
+    // add/remove an item at nth position
 }
 
 PerformanceTest::~PerformanceTest(){}
