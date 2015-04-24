@@ -45,7 +45,7 @@ double TimeFunction::timeIt(void(*function)(Container, int), Container c, int da
     microseconds time_takenms = duration_cast<microseconds>(end - start);
     output_sum += time_takenms;
   }
-  return duration_cast<microseconds> (output_sum/test_count).count();
+  return duration_cast<microseconds> (output_sum / test_count).count();
 }
 
 PerformanceTest::PerformanceTest(int numOfElements){
@@ -73,13 +73,20 @@ void PerformanceTest::runTests(int numOfElements_){
 
   //update (add/remove item)
   int element_pos;
+  std::cout << "Enter element position to add a value to the containers: " << std::endl; 
   std::cin >> element_pos;
   //std::vector
   std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::vector: "
     << time.timeIt(insertVectorElement, &ivec, element_pos) << " microseconds\n" << std::endl;
-  
+  //std::list
   std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::list: "
     << time.timeIt(insertListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
+
+  std::cout << "Enter element position to remove a value to the containers: " << std::endl;
+  std::cin >> element_pos;
+  
+  
+
 
   // add/remove an item at nth position
 }
