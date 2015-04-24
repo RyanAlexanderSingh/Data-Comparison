@@ -81,10 +81,15 @@ void PerformanceTest::runTests(int numOfElements_){
   //std::list
   std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::list: "
     << time.timeIt(insertListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
-
+  //remove an element
   std::cout << "Enter element position to remove a value to the containers: " << std::endl;
   std::cin >> element_pos;
-  
+  //std::vector
+  std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::vector: "
+    << time.timeIt(insertVectorElement, &ivec, element_pos) << " microseconds\n" << std::endl;
+  //std::list
+  std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::list: "
+    << time.timeIt(insertListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
   
 
 
