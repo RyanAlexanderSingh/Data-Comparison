@@ -16,28 +16,36 @@ void createContainers(OutIt it, int size){
     *it = i;
   }
 }
-
 ///using insert to add element at location (moves all subsequent elements up one place)
 template<typename Container>
-void insertElement(Container c, int position){
+void insertVectorElement(Container c, int position){
   int value = 391; //adding bogus value
   c->insert(c->begin() + position, value);
-
-  //just for testing purposes
-  /*for (int i = 0; i < c.size(); ++i){
-    printf("Value:%i\n", c[i]);
-  }*/
-
 }
 
+///test function for the std::list(have to use iterator...)
+template<typename Container>
+void insertListElement(Container c, int position){
+  int value = 391; //adding bogus value
+  std::list<int>::iterator it;
+  it = std::next(c->begin(), position);
+  c->insert(it, value);
+}
+
+//times the execution time of a function multiple times and returns the average
 template <typename Container>
 double TimeFunction::timeIt(void(*function)(Container, int), Container c, int data){
 
-  auto start = high_resolution_clock::now();
-  function(c, data);
-  auto end = high_resolution_clock::now();
-
-  return duration_cast<microseconds>(end - start).count();
+  microseconds output_sum(0);
+  int test_count = 5;
+  for (int i = 0; i < test_count; ++i){
+    auto start = high_resolution_clock::now();
+    function(c, data);
+    auto end = high_resolution_clock::now();
+    microseconds time_takenms = duration_cast<microseconds>(end - start);
+    output_sum += time_takenms;
+  }
+  return duration_cast<microseconds> (output_sum/test_count).count();
 }
 
 PerformanceTest::PerformanceTest(int numOfElements){
@@ -64,18 +72,16 @@ void PerformanceTest::runTests(int numOfElements_){
     << " microseconds\n" << std::endl;
 
   //update (add/remove item)
+  int element_pos;
+  std::cin >> element_pos;
   //std::vector
-  int elementPos;
-  std::cin >> elementPos;
+  std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::vector: "
+    << time.timeIt(insertVectorElement, &ivec, element_pos) << " microseconds\n" << std::endl;
+  
+  std::cout << "Time taken to insert value 391 at element " << element_pos << " in std::list: "
+    << time.timeIt(insertListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
 
-  std::cout << "Time taken to insert value at element " << elementPos << " in vector: "
-    << time.timeIt(insertElement, &ivec, elementPos) << " microseconds\n" << std::endl;
-
-  for (int i = 0; i < ivec.size(); ++i){
-    printf("Value:%i\n", ivec[i]);
-  }
-
-    // add/remove an item at nth position
+  // add/remove an item at nth position
 }
 
 PerformanceTest::~PerformanceTest(){}
