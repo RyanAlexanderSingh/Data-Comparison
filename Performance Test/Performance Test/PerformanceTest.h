@@ -9,7 +9,10 @@
 class TimeFunction{
   public:
     template <typename Container>
-    double timeIt(void(*function)(Container, int), Container c, int data);
+    double timeIt(void(*function)(Container, int, int), Container c, int element_pos, int element_val = 0);
+
+    template <typename Container>
+    double timeIt(void(*function)(Container, int), Container c, int element_pos);
 };
 
 class PerformanceTest{
