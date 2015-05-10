@@ -5,6 +5,7 @@
 #include <iterator>
 #include <chrono>
 #include <functional>
+#include <algorithm>
 
 using namespace std::chrono;
 
@@ -35,7 +36,7 @@ void insertListElement(Container c, int position, int value){
 ///Removing an element from a std::vector
 template<typename Container>
 void removeVectorElement(Container c, int position){
-  c->erase(c->begin()+position);
+  c->erase(c->begin() + position);
 }
 
 ///Removing an element from a std::list (consider merging with std::vector removeVectorElement)
@@ -45,6 +46,30 @@ void removeListElement(Container c, int position){
   it = c->begin();
   std::advance(it, position);
   c->erase(it);
+}
+
+///Access element by position in a std::vector
+template<typename Container>
+void accessVectorElement(Container c, int element){
+  std::list<int>::iterator it = std::find(c->begin(), c->end(), element);
+  int position = std::distance(c->begin(), it);
+  if (position < c->size()){
+    std::cout << "Found element " << element << " at position " <<
+      position << std::endl;
+  }
+  else std::cout << "Element could not be found" << std::endl;
+}
+
+///finding a specific element by returning its position
+template<typename Container>
+void accessListElement(Container c, int element){
+  std::list<int>::iterator it = std::find(c->begin(), c->end(), element);
+  int position = std::distance(c->begin(), it);
+  if (position < c->size()){
+    std::cout << "Found element " << element << " at position " <<
+      position << std::endl;
+  }
+  else std::cout << "Element could not be found" << std::endl;
 }
 
 /////times the execution time of a function multiple times and returns the average
@@ -88,11 +113,11 @@ template <typename Container>
 double TimeFunction::timeIt(void(*function)(Container, int, int), Container c, int element_pos, int element_val){
 
   Container temp_cont = c;
-    auto start = high_resolution_clock::now();
-    function(c, element_pos, element_val);
-    auto end = high_resolution_clock::now();
-    microseconds time_takenms = duration_cast<microseconds>(end - start);
-    return duration_cast<microseconds> (time_takenms).count();
+  auto start = high_resolution_clock::now();
+  function(c, element_pos, element_val);
+  auto end = high_resolution_clock::now();
+  microseconds time_takenms = duration_cast<microseconds>(end - start);
+  return duration_cast<microseconds> (time_takenms).count();
 }
 
 ///Function overloading -- This function will be used for creating containers/ remvoing elements (do not require a value to add)
@@ -127,11 +152,12 @@ void PerformanceTest::runTests(int numOfElements_){
   //std::list
   std::list<int> ilist;
   std::cout << "List build time: "
+    << time.timeIt(createContainers, &std::back_inserter(ilist), numOfElements_)
     << " microseconds\n" << std::endl;
 
   //update (add/remove item)
   int element_pos = 0, element_value = 0;
-  std::cout << "Enter element position to add a value to the containers: " << std::endl; 
+  std::cout << "Enter element position to add a value to the containers: " << std::endl;
   std::cin >> element_pos;
   std::cout << "Now enter value to be added to that position: " << std::endl;
   std::cin >> element_value;
@@ -145,19 +171,25 @@ void PerformanceTest::runTests(int numOfElements_){
   //remove an element
   std::cout << "Enter element position to remove a value to the containers: " << std::endl;
   std::cin >> element_pos;
-  //std::vector
   std::cout << "Time taken to remove element " << element_pos << " in std::vector: "
     << time.timeIt(removeVectorElement, &ivec, element_pos) << " microseconds\n" << std::endl;
-  //std::list
   std::cout << "Time taken to remove element " << element_pos << " in std::list: "
     << time.timeIt(removeListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
+
+  //access time (time taken to find element by position)
+  std::cout << "Enter element to be found by position" << std::endl;
+  std::cin >> element_pos;
+  //std::cout << "Time taken to find element " << element_pos << " in std::vector "
+  //  << time.timeIt(accessVectorElement, &ivec, element_pos) << " microseconds\n" << std::endl;
+  std::cout << "Time taken to search position " << element_pos << " in std::list: "
+    << time.timeIt(accessListElement, &ilist, element_pos) << " microseconds\n" << std::endl;
 
   std::cout << "Final size of vector" << std::endl;
   std::copy(ivec.begin(), ivec.end(), std::ostream_iterator<int>(std::cout, " "));
 
   std::cout << "Final size of list" << std::endl;
   std::copy(ilist.begin(), ilist.end(), std::ostream_iterator<int>(std::cout, " "));
-  
+
   system("pause");
 
 
