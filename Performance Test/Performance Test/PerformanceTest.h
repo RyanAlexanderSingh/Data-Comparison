@@ -5,8 +5,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <vector>
-#include <list>
 
 class TimeFunction{
   public:
@@ -34,9 +32,5 @@ private:
   
   void runTests(int numOfElements);
 };
-
-
-
-
 
 #endif /* INCLUDED_PERFORMANCE_TEST_H_ */

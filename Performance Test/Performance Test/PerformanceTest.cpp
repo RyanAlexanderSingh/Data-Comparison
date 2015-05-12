@@ -26,7 +26,7 @@ void createContainersIterator(OutIt it, int size){
   }
 }
 
-///using insert to add element at location (moves all subsequent elements up one place)
+///using insert to add element at location (moves all subsequent elements up one place, only performing once so its much more efficient)
 template<typename Container>
 void insertVectorElement(Container c, int position, int value){
   c.insert(c.begin() + position, value);
@@ -79,7 +79,7 @@ template <typename Container>
 double TimeFunction::timeIt(void(*function)(Container, int, int), Container c, int element_pos, int element_val){
 
   microseconds output_sum(0);
-  int test_count = 5;
+  int test_count = 1;
   Container temp_cont = c;
   for (int i = 0; i < test_count; ++i){
     auto start = high_resolution_clock::now();
@@ -97,7 +97,7 @@ template <typename Container>
 double TimeFunction::timeIt(void(*function)(Container, int), Container c, int element_pos){
 
   microseconds output_sum(0);
-  int test_count = 5;
+  int test_count = 1;
   Container temp_cont = c;
   for (int i = 0; i < test_count; ++i){
     auto start = high_resolution_clock::now();
@@ -175,8 +175,11 @@ void PerformanceTest::runTests(int numOfElements_){
   std::cin >> element_pos;
   std::cout << "Time taken to find element " << element_pos << " in std::vector "
     << time.timeIt(accessVectorElement, ivec, element_pos) << " microseconds\n" << std::endl;
-  std::cout << "Time taken to search position " << element_pos << " in std::list: "
+  std::cout << "Time taken to find element " << element_pos << " in std::list: "
     << time.timeIt(accessListElement, ilist, element_pos) << " microseconds\n" << std::endl;
+
+  //this is not ideal but it works for the time being (never use for real programs)
+  system("pause");
 }
 
 PerformanceTest::~PerformanceTest(){}
